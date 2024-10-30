@@ -1,0 +1,41 @@
+#cloud-config
+prefer_fqdn_over_hostname: false
+hostname: PlexMediaServer
+ssh_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII76gjWeMy9xfu7EAD2guCp4QoP9UGQtPEbQgsFLjXSE
+locale: de_DE.UTF-8
+timezone: Europe/Berlin
+runcmd:
+  - systemctl enable podman.socket
+  - systemctl start podman.socket
+  - systemctl enable podman-restart
+  - systemctl start podman-restart
+
+  - dnf install -y ntfs-3g
+  - mkdir /media/hdd
+  - echo 'UUID=DA00B7B900B79B49 /media/hdd ntfs nofail,x-systemd.device-timeout=20 0 0' >> /etc/fstab
+  - systemctl daemon-reload
+  - mount -a
+  - mkdir -p /media/hdd/plex/config
+  - mkdir -p /media/hdd/plex/transcode
+
+  - "COMPOSE_PATH=/usr/bin/docker-compose && curl --location 'https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64' --output $COMPOSE_PATH && chmod 755 $COMPOSE_PATH"
+  - cd /home/*
+  - git clone 'https://github.com/Alex1s/plex-media-server.git'
+  - chown -R 1000:1000 plex-media-server
+  - cd plex-media-server && podman compose up -d && cd -
+  - DEFAULT_USERNAME=$(basename /home/*)
+  - mkdir /home/"$DEFAULT_USERNAME"/.bashrc.d
+  - echo "alias podman='sudo podman'" >> /home/"$DEFAULT_USERNAME"/.bashrc.d/aliases
+  - echo "alias pc='sudo podman compose'" >> /home/"$DEFAULT_USERNAME"/.bashrc.d/aliases
+  - chown -R 1000:1000 /home/"$DEFAULT_USERNAME"/.bashrc.d
+package_reboot_if_required: true
+package_update: true
+package_upgrade: false # TODO SWITCH BACK TO true
+packages:
+  - qemu-guest-agent
+  - podman
+  - git-core
+  - langpacks-en
+  - langpacks-de
+  - epel-release
