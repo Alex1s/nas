@@ -1,6 +1,6 @@
 #cloud-config
 prefer_fqdn_over_hostname: false
-hostname: PlexMediaServer
+hostname: UniversalMediaServer
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII76gjWeMy9xfu7EAD2guCp4QoP9UGQtPEbQgsFLjXSE
 locale: de_DE.UTF-8
@@ -12,14 +12,21 @@ runcmd:
   - systemctl start podman-restart
 
   - dnf install -y ntfs-3g
+
   - mkdir /media/hdd
+  - mkdir /media/old_win
+  - mkdir /media/old_linux
+
   - echo 'UUID=DA00B7B900B79B49 /media/hdd ntfs nofail,x-systemd.device-timeout=20 0 0' >> /etc/fstab
+  - echo 'UUID=4409658837B191AA /media/old_win ntfs nofail,x-systemd.device-timeout=20 0 0' >> /etc/fstab
+  - echo 'UUID=7676b818-d6a8-41df-a17c-8b994dc7d640 /media/old_linux ext4 nofail,x-systemd.device-timeout=20 0 0' >> /etc/fstab
   - systemctl daemon-reload
   - mount -a
-  - mkdir -p /media/hdd/plex/config
-  - mkdir -p /media/hdd/plex/transcode
+
+  - mkdir -p /media/hdd/ums-config
 
   - "COMPOSE_PATH=/usr/bin/docker-compose && curl --location 'https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64' --output $COMPOSE_PATH && chmod 755 $COMPOSE_PATH"
+
   - cd /home/*
   - git clone 'https://github.com/Alex1s/plex-media-server.git'
   - chown -R 1000:1000 plex-media-server
