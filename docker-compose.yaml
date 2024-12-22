@@ -5,5 +5,22 @@ services:
     network_mode: host
     volumes:
       - /media/hdd/ums-config:/root/.config/UMS
-      - /media/hdd/Public/Filme:/root/media
+      - /media/hdd/Public/Filme:/root/media/Filme
+      - /media/old_win/media/:/root/media/chernobil
+    restart: always
+  samba:
+    image: ghcr.io/servercontainers/samba
+    environment:
+      ACCOUNT_media: "media:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:93BFB0CCEAE835A71D8E00E450538D3D:[U          ]:LCT-67674DA6:"
+      SAMBA_VOLUME_CONFIG_hdd: "[HDD]; path=/shares/hdd; valid users = media; guest ok = no; read only = yes; browseable = yes"
+      SAMBA_VOLUME_CONFIG_windows: "[Windows]; path=/shares/old_win; valid users = media; guest ok = no; read only = yes; browseable = yes"
+      FAIL_FAST: 1
+      WSDD2_DISABLE: 1
+      AVAHI_DISABLE: 1
+      NETBIOS_DISABLE: 1
+    ports:
+      - "445:445"
+    volumes:
+      - /media/hdd:/shares/hdd
+      - /media/old_win:/shares/old_win
     restart: always
