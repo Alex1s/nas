@@ -1,19 +1,19 @@
 services:
-  ums:
-    image: universalmediaserver/ums
-    container_name: ums
+  jellyfin:
+    image: ghcr.io/jellyfin/jellyfin:10.10.5
+    container_name: jellyfin
     network_mode: host
     volumes:
-      - /media/hdd/ums-config:/root/.config/UMS
-      - /media/hdd/Public/Filme:/root/media/Filme
-      - /media/old_win/media/:/root/media/chernobil
+      - ./jellyfin-config:/config
+      - /SATA/Media/jellyfin-cache:/cache
+      - /SATA/Media/Movies:/media/Filme:ro
+      - /SATA/Media/Series/:/media/Series:ro
     restart: always
   samba:
-    image: ghcr.io/servercontainers/samba
+    image: ghcr.io/servercontainers/samba:smbd-only-a3.21.2-s4.20.6-r1
     environment:
       ACCOUNT_media: "media:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:93BFB0CCEAE835A71D8E00E450538D3D:[U          ]:LCT-67674DA6:"
-      SAMBA_VOLUME_CONFIG_hdd: "[HDD]; path=/shares/hdd; valid users = media; guest ok = no; read only = yes; browseable = yes"
-      SAMBA_VOLUME_CONFIG_windows: "[Windows]; path=/shares/old_win; valid users = media; guest ok = no; read only = yes; browseable = yes"
+      SAMBA_VOLUME_CONFIG_hdd: "[Media]; path=/shares/Media; valid users = media; guest ok = no; read only = yes; browseable = yes"
       FAIL_FAST: 1
       WSDD2_DISABLE: 1
       AVAHI_DISABLE: 1
@@ -21,6 +21,15 @@ services:
     ports:
       - "445:445"
     volumes:
-      - /media/hdd:/shares/hdd
-      - /media/old_win:/shares/old_win
+      - /SATA/Media:/shares/Media:ro
     restart: always
+#  makemkv:
+#    image: jlesage/makemkv
+#    ports:
+#      - "5800:5800"
+#    volumes:
+#      - /SATA/Media/makemkv-output:/output
+#      - ./makemkv-config:/config
+#      - /SATA/Media/Series:/storage/Series:ro
+#      - /SATA/Media/Movies:/storage/Movies:ro
+#    restart: always

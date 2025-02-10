@@ -1,0 +1,5 @@
+Administration -> Dashboard -> Users -> root -> Profile -> Media playback -> Allow audio playback that requires transcoding = yes
+Administration -> Dashboard -> Users -> root -> Profile -> Media playback -> Allow video playback that requires transcoding = no
+Administration -> Dashboard -> Users -> root -> Profile -> Media playback -> Allow video playback that requires conversion without re-encoding = yes
+
+User -> Settings -> Subtitles -> Experimental PGS subtitle rendering = yes
