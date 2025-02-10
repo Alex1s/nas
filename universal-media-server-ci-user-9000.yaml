@@ -43,6 +43,4 @@ packages:
   - qemu-guest-agent
   - podman
   - git-core
-  - langpacks-en
-  - langpacks-de
   - epel-release
