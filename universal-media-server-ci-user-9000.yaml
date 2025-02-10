@@ -6,10 +6,8 @@ ssh_authorized_keys:
 locale: de_DE.UTF-8
 timezone: Europe/Berlin
 runcmd:
-  - systemctl enable podman.socket
-  - systemctl start podman.socket
-  - systemctl enable podman-restart
-  - systemctl start podman-restart
+  - systemctl enable podman.socket --now
+  - systemctl enable podman-restart --now
 
   - dnf install -y ntfs-3g
 
@@ -38,7 +36,7 @@ runcmd:
   - chown -R 1000:1000 /home/"$DEFAULT_USERNAME"/.bashrc.d
 package_reboot_if_required: true
 package_update: true
-package_upgrade: false # TODO SWITCH BACK TO true
+package_upgrade: true
 packages:
   - qemu-guest-agent
   - podman
