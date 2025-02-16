@@ -3,6 +3,9 @@
 set -e
 set -x
 
+setenforce Permissive
+sed -i 's/^SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+
 dnf install -y https://zfsonlinux.org/epel/zfs-release-2-3$(rpm --eval "%{dist}").noarch.rpm
 dnf config-manager --disable zfs
 dnf config-manager --enable zfs-kmod

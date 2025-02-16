@@ -1,6 +1,6 @@
 #cloud-config
 prefer_fqdn_over_hostname: false
-hostname: UniversalMediaServer
+hostname: NAS
 locale: de_DE.UTF-8
 timezone: Europe/Berlin
 users:
