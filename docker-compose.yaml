@@ -4,7 +4,7 @@ services:
     container_name: jellyfin
     network_mode: host
     volumes:
-      - ./jellyfin-config:/config
+      - ./config-jellyfin:/config
       - /SATA/Media/jellyfin-cache:/cache
       - /SATA/Media/Movies:/media/Filme:ro
       - /SATA/Media/Series/:/media/Series:ro

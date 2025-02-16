@@ -1,0 +1,34 @@
+services:
+  firefox:
+    network_mode: "service:gluetun"
+    image: lscr.io/linuxserver/firefox:0.24.04
+    environment:
+      - "PUID=0"
+      - "PGID=0"
+      - "TZ=Europe/Berlin"
+      - "LC_ALL=de_DE.UTF-8"
+    volumes:
+      - "./config-firefox:/config"
+      - "/SATA/Media/arrr/firefox:/config/Downloads"
+    shm_size: "1gb"
+  jdownloader:
+    network_mode: "service:gluetun"
+    image: docker.io/jlesage/jdownloader-2:v25.02.1
+    volumes:
+      - "./config-jdownloader:/config:rw"
+      - "/SATA/Media/arrr/jdownloader/:/output:rw"
+  gluetun:
+    image: qmcgaw/gluetun:v3.39.0
+    ports:
+      - "3000:3000"  # firefox
+      - "5800:5800"  # jdownloader
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    volumes:
+      - ./wg0.conf:/gluetun/wireguard/wg0.conf:ro
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/custom.conf
