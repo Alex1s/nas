@@ -18,7 +18,7 @@ runcmd:
 
   - export HOME=/root
   - cd $HOME
-  - echo "alias pc='podman compose' >> .bashrc"
+  - echo "alias pc='podman compose'" >> .bashrc
 
   - export REPO_NAME=nas
   - git clone "https://github.com/Alex1s/$REPO_NAME.git"
