@@ -1,3 +1,4 @@
 /config-firefox
 /config-jdownloader
-/wg0.conf
+/config-transmission
+/*.conf
