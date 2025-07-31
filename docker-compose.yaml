@@ -13,7 +13,7 @@ services:
     image: ghcr.io/servercontainers/samba:smbd-only-a3.21.2-s4.20.6-r1
     environment:
       ACCOUNT_media: "media:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:93BFB0CCEAE835A71D8E00E450538D3D:[U          ]:LCT-67674DA6:"
-      SAMBA_VOLUME_CONFIG_hdd: "[Media]; path=/shares/Media; valid users = media; guest ok = no; read only = yes; browseable = yes"
+      SAMBA_VOLUME_CONFIG_media: "[Media]; path=/shares/Media; valid users = media; guest ok = no; read only = yes; browseable = yes"
       FAIL_FAST: 1
       WSDD2_DISABLE: 1
       AVAHI_DISABLE: 1
