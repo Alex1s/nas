@@ -1,6 +1,7 @@
+[root@NAS nas]# cat docker-compose.yaml 
 services:
   jellyfin:
-    image: ghcr.io/jellyfin/jellyfin:10.10.7
+    image: ghcr.io/jellyfin/jellyfin:10.11.5  # https://hub.docker.com/r/jellyfin/jellyfin/tags
     container_name: jellyfin
     network_mode: host
     volumes:
@@ -10,7 +11,7 @@ services:
       - /SATA/Media/Series/:/media/Series:ro
     restart: always
   samba:
-    image: ghcr.io/servercontainers/samba:smbd-only-a3.21.2-s4.20.6-r1
+    image: ghcr.io/servercontainers/samba:smbd-only-a3.22.1-s4.21.4-r4  # https://hub.docker.com/r/servercontainers/samba/tags
     environment:
       ACCOUNT_media: "media:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:93BFB0CCEAE835A71D8E00E450538D3D:[U          ]:LCT-67674DA6:"
       SAMBA_VOLUME_CONFIG_media: "[Media]; path=/shares/Media; valid users = media; guest ok = no; read only = yes; browseable = yes"
@@ -24,7 +25,7 @@ services:
       - /SATA/Media:/shares/Media:ro
     restart: always
 #  makemkv:
-#    image: jlesage/makemkv
+#    image: jlesage/makemkv:v25.12.3  # https://github.com/jlesage/docker-makemkv/releases or https://hub.docker.com/r/jlesage/makemkv/tags
 #    ports:
 #      - "5800:5800"
 #    volumes:
