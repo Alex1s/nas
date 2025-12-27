@@ -19,4 +19,6 @@ dnf install -y zfs
 zpool import -a
 systemctl enable zfs-scrub-weekly@SATA.timer --now
 
+./install-hdparm-spindown-service.sh
+
 podman compose up -d

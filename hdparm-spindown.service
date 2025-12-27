@@ -1,0 +1,10 @@
+[Unit]
+Description=Set disk spindown timeout via hdparm
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/hdparm -S 120 /dev/disk/by-id/wwn-0x5000c5007b1d782b
+ExecStart=/usr/sbin/hdparm -S 120 /dev/disk/by-id/wwn-0x50014ee211933170
+
+[Install]
+WantedBy=multi-user.target
