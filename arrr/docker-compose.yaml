@@ -1,7 +1,8 @@
+[root@NAS arrr]# cat docker-compose.yaml 
 services:
   firefox:
     network_mode: "service:gluetun"
-    image: lscr.io/linuxserver/firefox:0.24.04
+    image: lscr.io/linuxserver/firefox:1146.0.1  # https://github.com/linuxserver/docker-firefox/releases or https://hub.docker.com/r/linuxserver/firefox/tags
     environment:
       - "PUID=0"
       - "PGID=0"
@@ -13,12 +14,12 @@ services:
     shm_size: "1gb"
   jdownloader:
     network_mode: "service:gluetun"
-    image: docker.io/jlesage/jdownloader-2:v25.02.1
+    image: docker.io/jlesage/jdownloader-2:v25.12.3  # https://github.com/jlesage/docker-jdownloader-2/releases or https://hub.docker.com/r/jlesage/jdownloader-2/tags
     volumes:
       - "./config-jdownloader:/config:rw"
       - "/SATA/Media/Downloads/:/output:rw"
   gluetun:
-    image: qmcgaw/gluetun:v3.39.0
+    image: docker.io/qmcgaw/gluetun:v3.41.0  # https://github.com/qdm12/gluetun/releases/ or https://hub.docker.com/r/qmcgaw/gluetun/tags
     ports:
       - "3000:3000"  # firefox
       - "5800:5800"  # jdownloader
@@ -33,9 +34,10 @@ services:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
       - OPENVPN_CUSTOM_CONFIG=/gluetun/custom.conf
+      - FIREWALL_VPN_INPUT_PORTS=60702
   transmission:
     network_mode: "service:gluetun"
-    image: lscr.io/linuxserver/transmission:latest
+    image: lscr.io/linuxserver/transmission:4.0.6  # https://github.com/linuxserver/docker-transmission/releases or https://hub.docker.com/r/linuxserver/transmission/tags
     environment:
       - PUID=0
       - PGID=0
