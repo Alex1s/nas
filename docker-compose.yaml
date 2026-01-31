@@ -19,10 +19,20 @@ services:
       AVAHI_DISABLE: 1
       NETBIOS_DISABLE: 1
     ports:
-      - "445:445"
+      - "446:445"
     volumes:
       - /SATA/Media:/shares/Media:ro
     restart: always
+  timemachine:
+    environment:
+      - IGNORE_DOS_ATTRIBUTES=true
+      - VOLUME_SIZE_LIMIT=1T
+    restart: always
+    ports:
+      - "445:445"
+    volumes:
+      - /SATA/timemachine:/opt
+    image: mbentley/timemachine:smb-20260129  # https://github.com/mbentley/docker-timemachine/commit/416eedb1d7f20a07fe377423e2f679ede3ceedbc
 #  makemkv:
 #    image: jlesage/makemkv:v25.12.3  # https://github.com/jlesage/docker-makemkv/releases or https://hub.docker.com/r/jlesage/makemkv/tags
 #    ports:
